@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/register.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <th:block th:if="${invalidData}">
+                        <div class="alert alert-dismissable alert-danger">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4>
+                                Error!
+                            </h4> <strong>Error!</strong> <span th:text="${textError}">invalidData</span>
+                        </div>
+                    </th:block>
+                    <div class="row center">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <form th:action="@{/register}" th:object="${registerDTO}" method="POST"
+                                  class="form-horizontal">
+                                <div class="form-group"
+                                     th:classappend="${invalidUsername} != null ? 'has-error' : null">
+
+                                    <label for="inputUsername" class="col-sm-2 control-label">
+                                        Username
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="username" th:field="*{username}" class="form-control"
+                                               id="inputUsername" placeholder="Username" maxlength="36"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:classappend="${invalidEmail} != null ? 'has-error' : null">
+
+                                    <label for="inputEmail" class="col-sm-2 control-label">
+                                        Email
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="email" th:field="*{email}" type="email" class="form-control"
+                                               id="inputEmail" placeholder="E-mail"/>
+                                    </div>
+                                </div>
+                                <div class="form-group"
+                                     th:classappend="${invalidPassword} != null ? 'has-error' : null">
+
+                                    <label for="inputPassword" class="col-sm-2 control-label">
+                                        Password
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="password" type="password" class="form-control"
+                                               id="inputPassword" placeholder="Password" maxlength="36"/>
+                                    </div>
+                                </div>
+                                <div class="form-group"
+                                     th:classappend="${invalidReenterPassword} != null ? 'has-error' : null">
+
+                                    <label for="inputReenterPassword" class="col-sm-2 control-label"
+                                           id="labelReenterPassword">
+                                        Reenter password
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="reenterPassword" type="password" class="form-control"
+                                               id="inputReenterPassword" placeholder="Re-enter password"
+                                               maxlength="36"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                        <button type="submit" class="btn btn-success btn-lg" id="btnCreateNewAccount">
+                                            Create new account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <a th:href="@{/login}" class="pull-right">
+                                    <button type="submit" class="btn btn-primary btn-md" id="btnSignIn">
+                                        Sign in
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

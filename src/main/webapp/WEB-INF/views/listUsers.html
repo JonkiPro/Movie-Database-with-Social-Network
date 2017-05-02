@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/listUsers.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="row">
+                <div class="col-md-12 pull-center well">
+                    <form th:action="@{/listUsers}" th:object="${filterUsersDTO}" method="POST"
+                          class="form-inline form">
+                        <div class="form-group">
+                            <select th:name="filter" class="form-control btn btn-default">
+                                <th:block th:if="${filterByUsername}">
+                                    <option th:name="username" value="username" selected="selected">filter by username
+                                    </option>
+                                </th:block>
+                                <th:block th:unless="${filterByUsername}">
+                                    <option th:name="username" value="username">filter by username</option>
+                                </th:block>
+                                <th:block th:if="${filterByEmail}">
+                                    <option th:name="email" value="email" selected="selected">filter by e-mail</option>
+                                </th:block>
+                                <th:block th:unless="${filterByEmail}">
+                                    <option th:name="email" value="email">filter by e-mail</option>
+                                </th:block>
+                            </select>
+                            <div class="input-group custom-search-form">
+                                <input th:name="search" type="text" class="form-control" placeholder="Search..."
+                                       th:value="${initSearch}"/>
+                                <span class="input-group-btn">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <button type="submit" class="btn btn-default">
+                                         Search
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <th:block th:if="${isSearch}">
+                        <h2>
+                            Search: <b th:text="${search}">Search</b> Filter by: <b th:text="${filter}">Filter</b>
+                        </h2>
+                    </th:block>
+                    <h3>
+                        Number of users: <span th:text="${numberOfUsers}"> ${numberOfUsers} </span>
+                    </h3>
+                    <table class="table table-hover" id="table">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>E-mail</th>
+                                <th:block th:if="${isLogged}">
+                                    <th>Other actions</th>
+                                </th:block>
+                            </tr>
+                        </thead>
+                        <tbody th:each="user : ${listUsers}">
+                            <tr>
+                                <th scope="row" th:text="${user.id}"> User ID </th>
+                                <td><a th:href="@{'/user/' + ${user.id}}" th:text="${user.username}"> User username </a></td>
+                                <td th:text="${user.email}"> User e-mail </td>
+                                <th:block th:if="${isLogged}">
+                                    <td>
+                                        <a th:href="@{'/sendMessage?recipient=' + ${user.username}}">
+                                            <button type="submit" class="btn btn-success">
+                                              SEND MESSAGE
+                                            </button>
+                                        </a>
+                                    </td>
+                                </th:block>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

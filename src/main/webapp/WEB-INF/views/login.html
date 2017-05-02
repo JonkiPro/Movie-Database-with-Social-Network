@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <th:block th:if="${param.error}">
+                        <div class="alert alert-dismissable alert-danger">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4>
+                                Error!
+                            </h4> <strong>Error!</strong> The username or password is incorrect!
+                        </div>
+                    </th:block>
+                    <th:block th:if="${afterRegistration}">
+                        <div class="alert alert-dismissable alert-success">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4>
+                                Success!
+                            </h4> <strong>Success!</strong> You can now sign in!
+                        </div>
+                    </th:block>
+                    <div class="row center">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4" th:with="hasError='has-error'">
+                            <form th:action="@{/login}" method="POST" class="form-horizontal">
+                                <div class="form-group" th:classappend="${param.error} ? ${hasError} : null">
+
+                                    <label for="inputUsername" class="col-sm-2 control-label">
+                                        Username
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="username" class="form-control" id="inputUsername"
+                                               placeholder="Username" maxlength="36"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" th:classappend="${param.error} ? ${hasError} : null">
+
+                                    <a th:href="@{/forgotPassword}" class="pull-right" id="linkForgotPassword">Forgot
+                                        password?</a>
+                                    <label for="inputPassword" class="col-sm-2 control-label" id="labelPassword">
+                                        Password
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input th:name="password" type="password" class="form-control"
+                                               id="inputPassword" placeholder="Password" maxlength="36"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                        <button type="submit" class="btn btn-success btn-lg" id="btnSignIn">
+                                            Sign in
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <a th:href="@{/register}" class="pull-right">
+                                    <button type="submit" class="btn btn-primary btn-md" id="btnCreateNewAccount">
+                                        Create new account
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

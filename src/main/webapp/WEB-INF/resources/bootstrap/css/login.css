@@ -1,0 +1,28 @@
+body {
+    overflow:hidden;
+}
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 85vh;
+}
+#inputUsername {
+     margin-left: 20px;
+}
+#inputPassword {
+    margin-left: 20px;
+}
+#labelPassword {
+    margin-top: 25px;
+}
+#linkForgotPassword {
+    margin-bottom: 5px;
+}
+#btnSignIn {
+    margin-left: 100px;
+    margin-top: 10px;
+}
+#btnCreateNewAccount {
+    margin-top: 10px;
+}

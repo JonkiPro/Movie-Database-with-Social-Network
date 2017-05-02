@@ -1,0 +1,97 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation" data-th-fragment="navbar">
+    <div class="navbar-header">
+
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                class="icon-bar"></span><span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand menuOnNavBar" th:href="@{/}">JONKI</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="active menuOnNavBar">
+                <a href="#">Home</a>
+            </li>
+            <li class="menuOnNavBar">
+                <a href="#">Movies</a>
+            </li>
+            <li class="dropdown menuOnNavBar">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community<strong class="caret"></strong></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a th:href="@{/listUsers}">List all users</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <form class="navbar-form navbar-left inputTextOnNavBar" role="search">
+            <div class="form-group">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Find movies..."/>
+                    <span class="input-group-btn">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="submit" class="btn btn-default">
+                                    Search
+                                </button>
+                            </span>
+                </div>
+            </div>
+        </form>
+        <ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
+            <li>
+                <a th:href="@{/login}">
+                    <button type="submit" class="btn btn-success">
+                        Sign in
+                    </button>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/register}">
+                    <button type="submit" class="btn btn-primary">
+                        Create new account
+                    </button>
+                </a>
+            </li>
+        </ul>
+        <ul sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right">
+            <li>
+                <a th:href="@{'/user/' + ${session.user.id}}">
+                    <button type="submit" class="btn btn-success" th:text="${session.user.username}">
+                        Username
+                    </button>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong
+                        class="caret"></strong></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a th:href="@{'/user/' + ${session.user.id}}">My profile</a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="#">Settings</a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a th:href="@{/logout}">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>
