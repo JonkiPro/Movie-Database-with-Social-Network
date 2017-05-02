@@ -1,0 +1,8 @@
+#table {
+    margin-top: 40px;
+}
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

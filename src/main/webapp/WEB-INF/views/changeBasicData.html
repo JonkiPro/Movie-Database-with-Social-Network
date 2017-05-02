@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/changeBasicData.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $(":file").change(function () {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = imageIsLoaded;
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+
+        function imageIsLoaded(e) {
+            $('#avatar').attr('src', e.target.result);
+        };
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="container container-central">
+                <h1 class="page-header">Edit Profile</h1>
+                <div class="row">
+                    <th:block th:if="${invalidData}">
+                        <div class="alert alert-dismissable alert-danger">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4>
+                                Error!
+                            </h4> <strong>Error!</strong> Only letters and numbers! User avatar must be in format .jpg or .png!
+                        </div>
+                    </th:block>
+                    <th:block th:if="${successData}">
+                        <div class="alert alert-dismissable alert-success">
+
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4>
+                                Success!
+                            </h4> <strong>Success!</strong> Data has been fixed!
+                        </div>
+                    </th:block>
+                    <form th:action="@{/user/settings/changeBasicData}" th:object="${changeBasicDataDTO}" method="POST"
+                          class="form-horizontal" role="form" enctype="multipart/form-data">
+                        <!-- left column -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="text-center">
+                                <img id="avatar" th:src="@{${session.user.getUrlAvatar()}}"
+                                     class="avatar img-circle img-thumbnail" alt="avatar">
+                                <h6>Upload a different photo...</h6>
+                                <input th:name="multipartFile" type="file" class="text-center center-block well well-sm">
+                            </div>
+                        </div>
+                        <!-- edit form column -->
+                        <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+                            <h3>Personal info</h3>
+                            <div class="form-group" th:classappend="${#fields.hasErrors('name') ? 'has-error' : null}">
+                                <label class="col-lg-3 control-label">Name:</label>
+                                <div class="col-lg-8">
+                                    <input th:name="name" class="form-control" type="text"
+                                           th:value="${session.user.name} != null ? ${session.user.name} : ''"
+                                           th:placeholder="(${session.user.name} == null or ${session.user.name.length() == 0}) ? 'Name' : ''">
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 th:classappend="${#fields.hasErrors('secondName') ? 'has-error' : null}">
+                                <label class="col-lg-3 control-label">Second name:</label>
+                                <div class="col-lg-8">
+                                    <input th:name="secondName" class="form-control" type="text"
+                                           th:value="${session.user.secondName} != null ? ${session.user.secondName} : ''"
+                                           th:placeholder="(${session.user.secondName} == null or ${session.user.secondName.length() == 0}) ? 'Second name' : ''">
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 th:classappend="${#fields.hasErrors('lastName') ? 'has-error' : null}">
+                                <label class="col-lg-3 control-label">Last name:</label>
+                                <div class="col-lg-8">
+                                    <input th:name="lastName" class="form-control" type="text"
+                                           th:value="${session.user.lastName} != null ? ${session.user.lastName} : ''"
+                                           th:placeholder="(${session.user.lastName} == null or ${session.user.lastName.length() == 0}) ? 'Last name' : ''">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Sex:</label>
+                                <div class="col-lg-8">
+                                    <div class="ui-select">
+                                        <select th:name="sex" id="sex" class="form-control">
+                                            <th:block th:if="${session.user.sex} == null">
+                                                <option value="" disabled selected>Select your sex</option>
+                                                <option th:name="male" value="male">male</option>
+                                                <option th:name="female" value="female">female</option>
+                                            </th:block>
+                                            <th:block th:unless="${session.user.sex} == null">
+                                                <th:block th:if="${session.user.sex == 'male'}">
+                                                    <option th:name="male" value="male" selected>male</option>
+                                                    <option th:name="female" value="female">female</option>
+                                                </th:block>
+                                                <th:block th:if="${session.user.sex == 'female'}">
+                                                    <option th:name="male" value="male">male</option>
+                                                    <option th:name="female" value="female" selected>female</option>
+                                                </th:block>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <button type="submit" class="btn btn-success btn-lg" id="btnSignIn">
+                                        Save Changes
+                                    </button>
+                                    <span></span>
+                                    <input class="btn btn-default" value="Cancel" type="reset">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

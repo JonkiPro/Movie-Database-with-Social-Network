@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/settings.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="form-group form-button">
+                <label class="col-md-4 control-label"></label>
+                <div class="col-md-4 center-block">
+                    <a th:href="@{/user/settings/changeBasicData}">
+                        <button name="singlebutton" class="btn btn-success center-block btn-block">
+                            CHANGES BASIC DATA
+                        </button>
+                    </a>
+                    <a th:href="@{/user/settings/changePassword}">
+                        <button name="singlebutton" class="btn btn-success center-block btn-block"
+                                id="btnChangePassword">
+                            CHANGE PASSWORD
+                        </button>
+                    </a>
+                    <a th:href="@{/user/settings/changeEmail}">
+                        <button name="singlebutton" class="btn btn-success center-block btn-block"
+                                id="btnChangeEmail">
+                            CHANGE E-MAIL
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

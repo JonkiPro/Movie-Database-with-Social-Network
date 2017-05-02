@@ -1,0 +1,18 @@
+body {
+    overflow:hidden;
+}
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 85vh;
+}
+#inputCode {
+    margin-left: 20px;
+}
+#btnOK {
+    margin-top: 10px;
+}
+#btnSendNewCode {
+    margin-top: 10px;
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <div class="container target">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h1 class="" th:text="${user.username}">Username</h1>
+
+                        <th:block th:if="${isMyAccount}">
+                            <a th:href="@{/user/settings}"><button type="button" class="btn btn-success">Edit my account!</button></a>
+                        </th:block>
+                        <th:block th:unless="${isMyAccount}">
+                            <button type="button" class="btn btn-success">Add to friends!</button>  <button type="button" class="btn btn-info">Send a message!</button>
+                        </th:block>
+                        <br>
+                    </div>
+                    <div class="col-sm-2"><a href="#" class="pull-right"><img title="profile image" class="img-circle img-responsive" src="################"></a>
+
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!--left col-->
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Username</strong></span> <span th:text="${user.username}">Username</span></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">E-mail</strong></span><span th:text="${user.email}">E-mail</span></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Role</strong></span><span th:text="${user.authorities}">Authorities</span></li>
+                        </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Here will be something.
+
+                            </div>
+                            <div class="panel-body"><i style="color:green" class="fa fa-check-square"></i> Here will be something.
+
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Here will be something. <i class="fa fa-link fa-1x"></i>
+
+                            </div>
+                            <div class="panel-body"><a href="#" class="">Here will be something.</a>
+
+                            </div>
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted">Here will be something. <i class="fa fa-dashboard fa-1x"></i>
+
+                            </li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Something</strong></span> 1</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Something</strong></span> 2</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Something</strong></span> 3</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Something</strong></span> 4</li>
+                        </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Here will be something.</div>
+                            <div class="panel-body">	<i class="fa fa-facebook fa-2x"></i>  <i class="fa fa-github fa-2x"></i>
+                                <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i>  <i class="fa fa-google-plus fa-2x"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/col-3-->
+                    <div class="col-sm-9" contenteditable="false">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Here will be something.</div>
+                            <div class="panel-body"> Here will be something.
+
+                            </div>
+                        </div>
+                        <div class="panel panel-default target">
+                            <div class="panel-heading" contenteditable="false">Here will be something.</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <img alt="300x200" src="#">
+                                            <div class="caption">
+                                                <h3>
+                                                    Jonki
+                                                </h3>
+                                                <p>
+                                                    Here will be something.
+                                                </p>
+                                                <p>
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <img alt="300x200" src="#">
+                                            <div class="caption">
+                                                <h3>
+                                                    Jonki
+                                                </h3>
+                                                <p>
+                                                    Here will be something.
+                                                </p>
+                                                <p>
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <img alt="300x200" src="#">
+                                            <div class="caption">
+                                                <h3>
+                                                    Jonki
+                                                </h3>
+                                                <p>
+                                                    Here will be something.
+                                                </p>
+                                                <p>
+
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Here will be something.</div>
+                            <div class="panel-body"> Here will be something.
+
+                            </div>
+                        </div></div>
+
+
+                    <div id="push"></div>
+                </div>
+                <footer id="footer">
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <p>
+                                <a href="#" rel="nofollow" title="###############" target="ext">###############</a><br>
+                                <a href="#" rel="publisher">###############</a><br>
+                                <a href="#" rel="nofollow" title="###############" target="ext">###############</a><br>
+                                <a href="#" title="###############" target="ext">###############</a><br>
+                            </p>
+                        </div>
+                        <div class="span3">
+                            <p>
+                                <a data-toggle="modal" role="button" href="#">###############</a><br>
+                                <a href="#">###############</a><br>
+                                <a href="#">###############</a><br>
+                                <a href="#">###############</a><br>
+                            </p>
+                        </div>
+                        <div class="span3">
+                            <p>
+                                <a href="#" target="ext" rel="nofollow">###############</a><br>
+                                <a href="#" target="_ext" rel="nofollow" title="###############">###############</a><br>
+                                <a href="#" target="_ext" rel="nofollow" title="###############">###############</a><br>
+                                <a href="#">###############</a><br>
+                            </p>
+                        </div>
+                        <div class="span3">
+                            <span class="pull-right">############### <a href="/" title="###############">###############</a> | <a href="#">###############</a></span>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

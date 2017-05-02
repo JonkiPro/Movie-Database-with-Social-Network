@@ -1,0 +1,24 @@
+.form-button {
+    margin-top: 200px;
+}
+#inputOldEmail {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+#inputNewEmail {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+#btnSaveChanges {
+    margin-left: 70px;
+}
+.form-activation-code {
+    margin-top: 30px;
+}
+#inputActivationCode {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+#btnOK {
+    margin-left: 110px;
+}
