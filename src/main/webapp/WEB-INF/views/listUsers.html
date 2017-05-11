@@ -86,7 +86,7 @@
                                 <td th:text="${user.email}"> User e-mail </td>
                                 <th:block th:if="${isLogged}">
                                     <td>
-                                        <a th:href="@{'/sendMessage?recipient=' + ${user.username}}">
+                                        <a th:href="@{'/messages/sendMessage?recipient=' + ${user.username}}">
                                             <button type="submit" class="btn btn-success">
                                               SEND MESSAGE
                                             </button>

@@ -25,6 +25,9 @@ public class Message {
     @Column(name = "date", updatable = false)
     private Date date;
 
+    @Column(name = "dateOfRead")
+    private Date dateOfRead;
+
     @ManyToOne
     @JoinColumn(name = "sender")
     private User senderUser;
@@ -76,6 +79,14 @@ public class Message {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getDateOfRead() {
+        return dateOfRead;
+    }
+
+    public void setDateOfRead(Date dateOfRead) {
+        this.dateOfRead = dateOfRead;
     }
 
     public User getSenderUser() {

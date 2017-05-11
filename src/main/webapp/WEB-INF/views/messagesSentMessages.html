@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/messages.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <nav class="navbar navbar-default navbar-static-top" role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <div class="btn-compose pull-left">
+                            <a type="button" class="btn btn-success navbar-btn" th:href="@{/messages/sendMessage}">
+                                <span class="glyphicon glyphicon-pencil"></span> New message</a>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Messages</a></li>
+                            <li><a href="#" role="tab" data-toggle="tab">Trash</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="Sent messages">
+
+                    <div class="container">
+                        <div class="content-container clearfix">
+                            <div class="col-md-12">
+                                <h1 class="content-title">Sent messages</h1>
+                                <form th:action="@{/messages/sentMessages}" th:method="POST">
+                                    <input th:name="search" type="search" placeholder="Search message" class="form-control mail-search"/>
+                                </form>
+                                <ul class="mail-list">
+                                    <li th:each="message : ${listMessages}">
+                                        <a th:href="@{'/message/sentMessage/' + ${message.getId()}}">
+                                            <span class="mail-sender" th:text="${message.getRecipientUser().getUsername()}">Recipient</span>
+                                            <span class="mail-subject" th:text="${message.getSubject()}">Subject</span>
+                                            <span class="mail-message-preview" th:text="${message.getText()}">Text</span>
+                                            <span class="mail-message-preview" th:text="'Date: ' + ${message.getDate()}">Date</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

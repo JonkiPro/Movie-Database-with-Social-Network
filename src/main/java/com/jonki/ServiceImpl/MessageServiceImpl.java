@@ -1,7 +1,6 @@
 package com.jonki.ServiceImpl;
 
-import com.jonki.DAO.GenericDAO;
-import com.jonki.DAO.MessageDAO;
+import com.jonki.DAO.MessageCRUDRepository;
 import com.jonki.DTO.MessageDTO;
 import com.jonki.Entity.Message;
 import com.jonki.Entity.User;
@@ -10,11 +9,13 @@ import com.jonki.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
-    private GenericDAO genericDAO;
+    private MessageCRUDRepository messageCRUDRepository;
     @Autowired
     private UserService userService;
 
@@ -24,6 +25,21 @@ public class MessageServiceImpl implements MessageService {
                                       userService.findUserByUsername(messageDTO.getRecipient()),
                                       messageDTO.getSubject(),
                                       messageDTO.getText());
-        genericDAO.save(message);
+        messageCRUDRepository.save(message);
+    }
+
+    @Override
+    public Message getMessage(final Long id) {
+        return messageCRUDRepository.getOne(id);
+    }
+
+    @Override
+    public void deleteMessage(final Long id) {
+        messageCRUDRepository.delete(id);
+    }
+
+    @Override
+    public void setDateOfRead(Long id) {
+        messageCRUDRepository.setDateOfRead(id, new Date());
     }
 }

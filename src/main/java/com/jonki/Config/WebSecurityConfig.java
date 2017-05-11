@@ -55,11 +55,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("SELECT username, ‘ROLE_USER’ FROM users WHERE username=?");
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring().antMatchers("/user/settings/changeBasicData");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web
+//                .ignoring().antMatchers("/user/settings/changeBasicData");
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

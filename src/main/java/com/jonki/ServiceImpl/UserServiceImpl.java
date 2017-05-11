@@ -1,6 +1,5 @@
 package com.jonki.ServiceImpl;
 
-import com.jonki.DAO.GenericDAO;
 import com.jonki.DAO.UserCRUDRepository;
 import com.jonki.DAO.UserDAO;
 import com.jonki.DTO.ForgotPasswordDTO;
@@ -11,15 +10,10 @@ import com.jonki.Service.RandomNumberService;
 import com.jonki.Service.SendMessageService;
 import com.jonki.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +25,6 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     @Autowired
     private UserCRUDRepository userCRUDRepository;
-    @Autowired
-    private GenericDAO genericDAO;
     @Autowired
     private SendMessageService sendMessageService;
     @Autowired
@@ -46,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         sendMessageService.send(registerDTO.getEmail(), "Activation code", String.valueOf(randomActivationCode));
 
-        genericDAO.save(new User(registerDTO.getUsername(),
+        userCRUDRepository.save(new User(registerDTO.getUsername(),
                                  registerDTO.getEmail(),
                                  encodeService.encode(registerDTO.getPassword()),
                                 "ROLE_USER",
@@ -56,14 +48,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public User getUser(final Long id) {
-        return (User)genericDAO.getOne(id);
+        return userCRUDRepository.getOne(id);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getAllUsers() { return genericDAO.findAll(); }
+    public List<User> getAllUsers() { return userCRUDRepository.findAll(); }
 
     @Override
     public boolean checkRepeatedUsername(final String username) {

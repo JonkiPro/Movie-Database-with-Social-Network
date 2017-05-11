@@ -32,7 +32,8 @@
                             <a th:href="@{/user/settings}"><button type="button" class="btn btn-success">Edit my account!</button></a>
                         </th:block>
                         <th:block th:unless="${isMyAccount}">
-                            <button type="button" class="btn btn-success">Add to friends!</button>  <button type="button" class="btn btn-info">Send a message!</button>
+                            <button type="button" class="btn btn-success">Add to friends!</button>
+                            <a th:href="@{'/messages/sendMessage?recipient=' + ${user.username}}"><button type="button" class="btn btn-info">Send a message!</button></a>
                         </th:block>
                         <br>
                     </div>

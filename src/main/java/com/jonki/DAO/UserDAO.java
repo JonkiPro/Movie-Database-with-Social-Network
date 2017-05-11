@@ -1,9 +1,5 @@
 package com.jonki.DAO;
 
-import com.jonki.Entity.User;
-
-import java.util.List;
-
 public interface UserDAO {
     public boolean checkRepeatedUsername(final String username); // True, if it exists.
     public boolean checkRepeatedEmail(final String email); // True, if it exists.

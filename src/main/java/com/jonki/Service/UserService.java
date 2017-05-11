@@ -10,11 +10,6 @@ import java.util.List;
 
 public interface UserService {
 
-    // Generic DAO // SPRING DATA
-    public void registerUser(final RegisterDTO registerDTO);
-    public User getUser(final Long id);
-    public List<User> getAllUsers();
-
     // User DAO // HIBERNATE
     public boolean checkRepeatedUsername(final String username);
     public boolean checkRepeatedEmail(final String email);
@@ -24,6 +19,9 @@ public interface UserService {
     public Long getIDByEmail(final String email);
 
     // User CRUD Repository // SPRING DATA
+    public void registerUser(final RegisterDTO registerDTO);
+    public User getUser(final Long id);
+    public List<User> getAllUsers();
     public void setName(final Long id, final String name);
     public void setSecondName(final Long id, final String secondName);
     public void setLastName(final Long id, final String lastName);

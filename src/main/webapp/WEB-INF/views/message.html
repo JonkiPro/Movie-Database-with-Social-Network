@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/messages.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div data-th-replace="/include/navbar::navbar"></div>
+
+            <nav class="navbar navbar-default navbar-static-top" role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <div class="btn-compose pull-left">
+                            <a type="button" class="btn btn-success navbar-btn" th:href="@{/messages/sendMessage}">
+                                <span class="glyphicon glyphicon-pencil"></span> New message</a>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Messages</a></li>
+                            <li><a th:href="@{/messages/sentMessages}" role="tab" data-toggle="tab">Sent messages</a>
+                            </li>
+                            <li><a href="#" role="tab" data-toggle="tab">Trash</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+
+
+            <div class="tab-content">
+                <div class="container">
+                    <div class="content-container clearfix">
+                        <h1 class="content-title">Message</h1>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input th:value="${message.getSenderUser().getUsername()}" type="text"
+                                       class="form-control" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <input th:value="${message.getRecipientUser().getUsername()}"  type="text"
+                                       class="form-control" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <input th:value="${message.getSubject()}" type="text" class="form-control" readonly/>
+                            </div>
+                            <textarea th:text="${message.getText()}" class="form-control" readonly>Text</textarea>
+                            <th:block th:if="${message.getDateOfRead() != null}">
+                                <p class="pull-right" style="margin-top: 5px;" th:utext="'<b>Date of read:</b> ' + ${message.getDateOfRead()}">Date of read</p>
+                            </th:block>
+                            <div class="btn-send">
+                                <a th:href="@{'/deleteMessage?messageID=' + ${message.getId()}}">
+                                    <button class="btn btn-danger btn-lg"><span
+                                            class="glyphicon glyphicon-send"></span> DELETE
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

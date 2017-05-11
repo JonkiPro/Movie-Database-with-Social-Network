@@ -1,8 +1,12 @@
 package com.jonki.Validator;
 
+import com.jonki.Entity.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -26,5 +30,41 @@ public class Validator {
     public boolean checkAvatar(final MultipartFile multipartFile) {
         return multipartFile.getOriginalFilename().endsWith(".jpg")
                 || multipartFile.getOriginalFilename().endsWith(".png");
+    }
+
+    public List<Message> filterMessages(final String search, final List<Message> listMessages) {
+        List<Message> listMessagesAfterFilter = new ArrayList<>();
+        int count = 0;
+        for(Message message : listMessages) {
+            if(message.getSenderUser().getUsername().contains(search)
+                    || message.getSubject().contains(search)
+                    || message.getText().contains(search)) {
+                listMessagesAfterFilter.add(listMessages.get(count));
+            }
+            ++count;
+        }
+        return listMessagesAfterFilter;
+    }
+
+    public List<Message> filterSentMessages(final String search, final List<Message> listMessages) {
+        List<Message> listMessagesAfterFilter = new ArrayList<>();
+        int count = 0;
+        for(Message message : listMessages) {
+            if(message.getRecipientUser().getUsername().contains(search)
+                    || message.getSubject().contains(search)
+                    || message.getText().contains(search)) {
+                listMessagesAfterFilter.add(listMessages.get(count));
+            }
+            ++count;
+        }
+        return listMessagesAfterFilter;
+    }
+
+    public boolean isYourMessage(final Long id, final List<Message> listMessages) {
+        for(Iterator<Message> it = listMessages.iterator(); it.hasNext();) {
+            if(it.next().getId().equals(id))
+                return true;
+        }
+        return false;
     }
 }

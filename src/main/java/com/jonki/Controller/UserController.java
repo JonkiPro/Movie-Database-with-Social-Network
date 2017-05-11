@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Controller
@@ -106,8 +108,8 @@ public class UserController {
     }
 
     @PostMapping("/listUsers")
-    public String showListUsersAfterFilter(@ModelAttribute("filterUsersDTO") final FilterUsersDTO filterUsersDTO) {
-        return "redirect:/listUsers?search=" + filterUsersDTO.getSearch() + "&filter=" + filterUsersDTO.getFilter();
+    public String showListUsersAfterFilter(@ModelAttribute("filterUsersDTO") final FilterUsersDTO filterUsersDTO) throws UnsupportedEncodingException {
+        return "redirect:/listUsers?search=" +  URLEncoder.encode(filterUsersDTO.getSearch(), "UTF-8")  + "&filter=" +  URLEncoder.encode(filterUsersDTO.getFilter(), "UTF-8");
     }
 
     @GetMapping("/user/settings")
