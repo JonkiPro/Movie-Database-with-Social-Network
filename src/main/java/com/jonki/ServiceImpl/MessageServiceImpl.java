@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
@@ -34,12 +35,27 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void deleteMessage(final Long id) {
-        messageCRUDRepository.delete(id);
+    public void setDateOfRead(Long id) {
+        messageCRUDRepository.setDateOfRead(id, new Date());
     }
 
     @Override
-    public void setDateOfRead(Long id) {
-        messageCRUDRepository.setDateOfRead(id, new Date());
+    public void deleteReceivedMessage(final Long id) {
+        messageCRUDRepository.deleteReceivedMessage(id, false);
+    }
+
+    @Override
+    public void deleteSentMessage(final Long id) {
+        messageCRUDRepository.deleteSentMessage(id, false);
+    }
+
+    @Override
+    public List<Message> findAllReceivedMessages(final User recipient) {
+        return messageCRUDRepository.findAllReceivedMessages(true, recipient);
+    }
+
+    @Override
+    public List<Message> findAllSentMessages(final User sender) {
+        return messageCRUDRepository.findAllSentMessages(true, sender);
     }
 }

@@ -44,8 +44,8 @@
                                 <span class="glyphicon glyphicon-pencil"></span> New message</a>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Messages</a></li>
-                            <li><a href="#" role="tab" data-toggle="tab">Trash</a></li>
+                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Received messages</a></li>
+                            <li><a th:href="@{/messages/sentMessages}" role="tab" data-toggle="tab">Sent messages</a></li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -59,10 +59,21 @@
 
                     <div class="container">
                         <div class="content-container clearfix">
+                            <th:block th:if="${yourMessageHasBeenRemoved}">
+                                <div class="alert alert-dismissable alert-success">
+
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                        ×
+                                    </button>
+                                    <h4>
+                                        Success!
+                                    </h4> <strong>Success!</strong> Your message has been removed!
+                                </div>
+                            </th:block>
                             <div class="col-md-12">
                                 <h1 class="content-title">Sent messages</h1>
                                 <form th:action="@{/messages/sentMessages}" th:method="POST">
-                                    <input th:name="search" type="search" placeholder="Search message" class="form-control mail-search"/>
+                                    <input th:name="search" th:value="${search}" type="search" placeholder="Search message" class="form-control mail-search"/>
                                 </form>
                                 <ul class="mail-list">
                                     <li th:each="message : ${listMessages}">

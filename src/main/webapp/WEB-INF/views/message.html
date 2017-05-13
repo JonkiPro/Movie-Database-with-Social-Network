@@ -44,10 +44,9 @@
                                 <span class="glyphicon glyphicon-pencil"></span> New message</a>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Messages</a></li>
+                            <li><a th:href="@{/messages}" role="tab" data-toggle="tab">Received messages</a></li>
                             <li><a th:href="@{/messages/sentMessages}" role="tab" data-toggle="tab">Sent messages</a>
                             </li>
-                            <li><a href="#" role="tab" data-toggle="tab">Trash</a></li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -59,15 +58,11 @@
             <div class="tab-content">
                 <div class="container">
                     <div class="content-container clearfix">
-                        <h1 class="content-title">Message</h1>
+                        <h1 class="content-title">Received message</h1>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input th:value="${message.getSenderUser().getUsername()}" type="text"
-                                       class="form-control" readonly/>
-                            </div>
-                            <div class="form-group">
-                                <input th:value="${message.getRecipientUser().getUsername()}"  type="text"
-                                       class="form-control" readonly/>
+                                <a th:href="@{'/user/' + ${message.getSenderUser().getId()}}"><input th:value="${message.getSenderUser().getUsername()}" type="text"
+                                       class="form-control" style="font-weight:bold;" readonly/></a>
                             </div>
                             <div class="form-group">
                                 <input th:value="${message.getSubject()}" type="text" class="form-control" readonly/>
@@ -80,6 +75,11 @@
                                 <a th:href="@{'/deleteMessage?messageID=' + ${message.getId()}}">
                                     <button class="btn btn-danger btn-lg"><span
                                             class="glyphicon glyphicon-send"></span> DELETE
+                                    </button>
+                                </a>
+                                <a th:href="@{'/messages/sendMessage?recipient=' + ${message.getSenderUser().getUsername()}}">
+                                    <button class="btn btn-success btn-lg"><span
+                                            class="glyphicon glyphicon-send"></span> REPLY
                                     </button>
                                 </a>
                             </div>

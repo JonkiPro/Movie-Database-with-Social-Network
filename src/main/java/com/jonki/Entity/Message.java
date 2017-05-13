@@ -36,6 +36,12 @@ public class Message {
     @JoinColumn(name = "recipient")
     private User recipientUser;
 
+    @Column(name = "isVisibleForSender")
+    private boolean isVisibleForSender;
+
+    @Column(name = "isVisibleForRecipient")
+    private boolean isVisibleForRecipient;
+
     public Message() {}
 
     // Send message
@@ -47,6 +53,8 @@ public class Message {
         this.recipientUser = recipientUser;
         this.subject = subject;
         this.text = text;
+        this.isVisibleForSender = true;
+        this.isVisibleForRecipient = true;
     }
 
     public Long getId() {
@@ -103,5 +111,21 @@ public class Message {
 
     public void setRecipientUser(User recipientUser) {
         this.recipientUser = recipientUser;
+    }
+
+    public boolean isVisibleForSender() {
+        return isVisibleForSender;
+    }
+
+    public void setVisibleForSender(boolean visibleForSender) {
+        isVisibleForSender = visibleForSender;
+    }
+
+    public boolean isVisibleForRecipient() {
+        return isVisibleForRecipient;
+    }
+
+    public void setVisibleForRecipient(boolean visibleForRecipient) {
+        isVisibleForRecipient = visibleForRecipient;
     }
 }

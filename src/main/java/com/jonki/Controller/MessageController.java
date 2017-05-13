@@ -46,8 +46,11 @@ public class MessageController {
             return "redirect:/";
         }
 
+        ((User) session.getAttribute("user")).setReceivedMessages(messageService.findAllReceivedMessages(((User) session.getAttribute("user"))));
+
         if(search != null) {
             model.addAttribute("listMessages", validator.filterMessages(search, ((User)session.getAttribute("user")).getReceivedMessages()));
+            model.addAttribute("search", search);
         } else {
             model.addAttribute("listMessages", ((User) session.getAttribute("user")).getReceivedMessages());
         }
@@ -96,7 +99,7 @@ public class MessageController {
 
         messageService.sendMessage((User) session.getAttribute("user"), messageDTO);
 
-        model.addAttribute("successSendMessage", true);
+        model.addAttribute("yourMessageHasBeenSent", true);
         model.addAttribute("recipient", "");
         model.addAttribute("messageDTO", new MessageDTO());
         return "messagesSendMessage";
@@ -113,8 +116,11 @@ public class MessageController {
             return "redirect:/";
         }
 
+        ((User) session.getAttribute("user")).setSentMessages(messageService.findAllSentMessages(((User) session.getAttribute("user"))));
+
         if(search != null) {
             model.addAttribute("listMessages", validator.filterSentMessages(search, ((User)session.getAttribute("user")).getSentMessages()));
+            model.addAttribute("search", search);
         } else {
             model.addAttribute("listMessages", ((User) session.getAttribute("user")).getSentMessages());
         }
@@ -137,6 +143,8 @@ public class MessageController {
         if(!authorizationService.isLogged()) {
             return "redirect:/";
         }
+
+        ((User) session.getAttribute("user")).setReceivedMessages(messageService.findAllReceivedMessages(((User) session.getAttribute("user"))));
 
         List<Message> listMessages = new ArrayList<>();
         listMessages.addAll((((User) session.getAttribute("user")).getReceivedMessages()));
@@ -167,6 +175,8 @@ public class MessageController {
             return "redirect:/";
         }
 
+        ((User) session.getAttribute("user")).setSentMessages(messageService.findAllSentMessages(((User) session.getAttribute("user"))));
+
         List<Message> listMessages = new ArrayList<>();
         listMessages.addAll(((User) session.getAttribute("user")).getSentMessages());
 
@@ -180,9 +190,10 @@ public class MessageController {
     }
 
     @GetMapping("/deleteMessage")
-    public String delete(@RequestParam(value = "messageID") final Long id,
-                         final HttpServletRequest request,
-                         final HttpSession session) {
+    public String deleteMessage(@RequestParam(value = "messageID") final Long id,
+                                final HttpServletRequest request,
+                                final HttpSession session,
+                                final RedirectAttributes redirectAttributes) {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
@@ -196,8 +207,35 @@ public class MessageController {
             return "redirect:/";
         }
 
-        messageService.deleteMessage(id);
+        messageService.deleteReceivedMessage(id);
+
+        redirectAttributes.addFlashAttribute("yourMessageHasBeenRemoved", true);
 
         return "redirect:/messages";
+    }
+
+    @GetMapping("/deleteSentMessage")
+    public String deleteSentMessage(@RequestParam(value = "messageID") final Long id,
+                                    final HttpServletRequest request,
+                                    final HttpSession session,
+                                    final RedirectAttributes redirectAttributes) {
+        authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
+
+        if(!authorizationService.isLogged()) {
+            return "redirect:/";
+        }
+
+        List<Message> listMessages = new ArrayList<>();
+        listMessages.addAll((((User) session.getAttribute("user")).getSentMessages()));
+
+        if(!validator.isYourMessage(id, listMessages)) {
+            return "redirect:/";
+        }
+
+        messageService.deleteSentMessage(id);
+
+        redirectAttributes.addFlashAttribute("yourMessageHasBeenRemoved", true);
+
+        return "redirect:/messages/sentMessages";
     }
 }
