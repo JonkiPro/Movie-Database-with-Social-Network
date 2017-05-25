@@ -1,6 +1,7 @@
 package com.jonki.Config;
 
 import com.jonki.Entity.Message;
+import com.jonki.Entity.Movie;
 import com.jonki.Entity.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class WebDatasourceConfig {
         sessionFactoryBean.setHibernateProperties(getHibernateProperties());
         sessionFactoryBean.setDataSource(getDatasource());
         sessionFactoryBean.afterPropertiesSet();
-        sessionFactoryBean.setAnnotatedClasses(User.class, Message.class);
+        sessionFactoryBean.setAnnotatedClasses(User.class, Message.class, Movie.class);
 
         return sessionFactoryBean.getObject();
     }

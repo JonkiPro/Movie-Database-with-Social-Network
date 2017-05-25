@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/addNewMovie.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-12">
+        <div data-th-replace="/include/navbar::navbar"></div>
+    </div>
+    <div class="row">
+        <section>
+            <div class="wizard">
+                <div class="wizard-inner">
+                    <div class="connecting-line"></div>
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <li role="presentation" class="disabled">
+                            <a href="" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1" class="link-disabled">
+                            <span class="round-tab">
+                                1
+                            </span>
+                            </a>
+                        </li>
+
+                        <li role="presentation" class="active">
+                            <a href="" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2" class="link-disabled">
+                            <span class="round-tab">
+                                2
+                            </span>
+                            </a>
+                        </li>
+                        <li role="presentation" class="disabled">
+                            <a href="" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3" class="link-disabled">
+                            <span class="round-tab">
+                                3
+                            </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" role="tabpanel" id="step1">
+                            <h3>Movie info</h3>
+                            <p class="p-info">* Several attributes separated by commas</p>
+                            <form th:action="@{/movie/new/success}" th:object="${movieDTO}" method="POST">
+                                <div class="col-xs-6 panel-info">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input type="text" th:name="title" th:value="${title}" class="form-control" id="title" placeholder="Title" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="othertitles">Other titles</label>
+                                        <input type="text" th:name="otherTitles" class="form-control" id="othertitles" placeholder="Other titles">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="director">Director</label>
+                                        <input type="text" th:name="director" class="form-control" id="director" placeholder="Director">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="writers">Writers</label>
+                                        <input type="text" th:name="writers" class="form-control" id="writers" placeholder="Writers">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="budget">Budget($)</label>
+                                        <input type="number" th:name="budget" class="form-control" id="budget" placeholder="Budget($)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="boxoffice">Box office($)</label>
+                                        <input type="number" th:name="boxOffice" class="form-control" id="boxoffice" placeholder="Box office($)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="officialsite">Official site(URL)</label>
+                                        <input type="url" th:name="officialSite" class="form-control" id="officialsite" placeholder="Official site(URL)">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 panel-info">
+                                    <div class="form-group">
+                                        <label for="releasedate">Release date</label>
+                                        <input type="date" th:name="releaseDate" class="form-control" id="releasedate" placeholder="Release date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="type">Type</label>
+                                        <select th:name="type" class="form-control" id="type">
+                                            <option value="Movie">Movie</option>
+                                            <option value="TV movie">TV movie</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country">Country</label>
+                                        <select th:name="country" multiple class="form-control" id="country">
+                                            <option value="USA">USA</option>
+                                            <option value="Poland">Poland</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language">Language</label>
+                                        <select th:name="language" multiple class="form-control" id="language">
+                                            <option value="English">English</option>
+                                            <option value="Polish">Polish</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="genres">Genres</label>
+                                        <select th:name="genres" multiple class="form-control" id="genres">
+                                            <option value="Action">Action</option>
+                                            <option value="Animation">Animation</option>
+                                            <option value="Anime">Anime</option>
+                                            <option value="Comedy">Comedy</option>
+                                            <option value="Documentary">Documentary</option>
+                                            <option value="Family">Family</option>
+                                            <option value="Horror">Horror</option>
+                                            <option value="Musical">Musical</option>
+                                            <option value="Romance">Romance</option>
+                                            <option value="War">War</option>
+                                            <option value="Adventure">Adventure</option>
+                                            <option value="Biography">Biography</option>
+                                            <option value="Crime">Crime</option>
+                                            <option value="Drama">Drama</option>
+                                            <option value="Fantasy">Fantasy</option>
+                                            <option value="History">History</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Sci-Fi">Sci-Fi</option>
+                                            <option value="Thriller">Thriller</option>
+                                            <option value="Western">Western</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <ul class="list-inline pull-right btn-save">
+                                    <li>
+                                        <button type="submit" class="btn btn-success btn-lg next-step">Save and continue</button>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

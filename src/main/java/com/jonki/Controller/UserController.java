@@ -65,9 +65,10 @@ public class UserController {
         return "user";
     }
 
-    @GetMapping("/listUsers")
+    @GetMapping("/users")
     public String showListUsers(@RequestParam(value = "search", required = false) final String search,
                                 @RequestParam(value = "filter", required = false) final String filter,
+                                @RequestParam(value = "page", required = false, defaultValue = "1") final int page,
                                 final Model model,
                                 final HttpServletRequest request,
                                 final HttpSession session) {
@@ -80,18 +81,20 @@ public class UserController {
         }
 
         if (search == null) {
-            List<User> listUsers = userService.getAllUsers();
+            List<User> listUsers = userService.getAllUsers(page-1);
 
             model.addAttribute("listUsers", listUsers);
-            model.addAttribute("numberOfUsers", listUsers.size());
+            model.addAttribute("numberOfUsers", userService.countAllUser());
             model.addAttribute("filterUsersDTO", new FilterUsersDTO());
         } else {
             List<User> listUsers;
             if (filter.equals("username")) {
-                listUsers = userService.findUsersByUsernamePhrase("%" + search + "%");
+                listUsers = userService.findUsersByUsernamePhrase("%" + search + "%", page-1);
+                model.addAttribute("numberOfUsers", userService.countAllUserByUsernamePhrase("%" + search + "%"));
                 model.addAttribute("filterByUsername", true);
             } else {
-                listUsers = userService.findUsersByEmailPhrase("%" + search + "%");
+                listUsers = userService.findUsersByEmailPhrase("%" + search + "%", page-1);
+                model.addAttribute("numberOfUsers", userService.countAllUserByEmailPhrase("%" + search + "%"));
                 model.addAttribute("filterByEmail", true);
             }
 
@@ -99,17 +102,15 @@ public class UserController {
             model.addAttribute("isSearch", true);
             model.addAttribute("search", search);
             model.addAttribute("filter", filter);
-            model.addAttribute("numberOfUsers", listUsers.size());
-            model.addAttribute("filterUsersDTO", new FilterUsersDTO());
             model.addAttribute("initSearch", search);
         }
 
-        return "listUsers";
+        return "users";
     }
 
-    @PostMapping("/listUsers")
+    @PostMapping("/users")
     public String showListUsersAfterFilter(@ModelAttribute("filterUsersDTO") final FilterUsersDTO filterUsersDTO) throws UnsupportedEncodingException {
-        return "redirect:/listUsers?search=" +  URLEncoder.encode(filterUsersDTO.getSearch(), "UTF-8")  + "&filter=" +  URLEncoder.encode(filterUsersDTO.getFilter(), "UTF-8");
+        return "redirect:/users?search=" +  URLEncoder.encode(filterUsersDTO.getSearch(), "UTF-8")  + "&filter=" +  URLEncoder.encode(filterUsersDTO.getFilter(), "UTF-8");
     }
 
     @GetMapping("/user/settings")

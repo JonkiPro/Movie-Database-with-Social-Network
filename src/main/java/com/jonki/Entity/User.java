@@ -84,6 +84,32 @@ public class User {
 
     //////////////////////////////////
 
+    @ManyToMany
+    @JoinTable(
+            name = "friends",
+            joinColumns = {@JoinColumn(name = "friendB")},
+            inverseJoinColumns = {@JoinColumn(name = "friendA")}
+    )
+    private List<User> friends;
+
+    @ManyToMany
+    @JoinTable(
+            name = "friends",
+            joinColumns = {@JoinColumn(name = "invitationB")},
+            inverseJoinColumns = {@JoinColumn(name = "invitationA")}
+    )
+    private List<User> sentInvitations;
+
+    @ManyToMany
+    @JoinTable(
+            name = "friends",
+            joinColumns = {@JoinColumn(name = "invitationA")},
+            inverseJoinColumns = {@JoinColumn(name = "invitationB")}
+    )
+    private List<User> receivedInvitations;
+
+    //////////////////////////////////
+
     public User() {}
 
     // Register
@@ -253,5 +279,29 @@ public class User {
 
     public void setSentMessages(List<Message> sentMessages) {
         this.sentMessages = sentMessages;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public List<User> getSentInvitations() {
+        return sentInvitations;
+    }
+
+    public void setSentInvitations(List<User> sentInvitations) {
+        this.sentInvitations = sentInvitations;
+    }
+
+    public List<User> getReceivedInvitations() {
+        return receivedInvitations;
+    }
+
+    public void setReceivedInvitations(List<User> receivedInvitations) {
+        this.receivedInvitations = receivedInvitations;
     }
 }

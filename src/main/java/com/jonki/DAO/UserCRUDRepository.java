@@ -1,6 +1,8 @@
 package com.jonki.DAO;
 
 import com.jonki.Entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Repository
 @Transactional
@@ -59,15 +60,11 @@ public interface UserCRUDRepository extends JpaRepository<User, Long> {
     @Query("update User e set e.updateDate = :updateDate where e.id = :id")
     public void setUpdateDate(@Param("id") Long id, @Param("updateDate") Date updateDate);
 
-    @Modifying(clearAutomatically = true)
     @Transactional(readOnly = true)
-    @Query("select e from User e where e.username LIKE :username")
-    public List<User> findUsersByUsernamePhrase(@Param("username") String username);
+    public Page<User> findByUsernameIgnoreCaseContaining(String username, Pageable pageable);
 
-    @Modifying(clearAutomatically = true)
     @Transactional(readOnly = true)
-    @Query("select e from User e where e.email LIKE :email")
-    public List<User> findUsersByEmailPhrase(@Param("email") String email);
+    public Page<User> findByEmailIgnoreCaseContaining(String email, Pageable pageable);
 
     @Transactional(readOnly = true)
     public User findOneByUsername(String username);
@@ -79,4 +76,13 @@ public interface UserCRUDRepository extends JpaRepository<User, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update User e set e.password = :password where e.id = :id")
     public void resetPassword(@Param("id") Long id, @Param("password") String password);
+
+    @Query("SELECT COUNT(ID) FROM User")
+    public Long countAllUser();
+
+    @Query("SELECT COUNT(ID) FROM User e WHERE e.username LIKE :username")
+    public Long countAllUserByUsernamePhrase(@Param("username") String username);
+
+    @Query("SELECT COUNT(ID) FROM User e WHERE e.email LIKE :email")
+    public Long countAllUserByEmailPhrase(@Param("email") String email);
 }

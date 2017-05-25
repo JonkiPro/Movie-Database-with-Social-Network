@@ -3,6 +3,7 @@ package com.jonki.Service;
 import com.jonki.DTO.ForgotPasswordDTO;
 import com.jonki.DTO.RegisterDTO;
 import com.jonki.Entity.User;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public interface UserService {
     // User CRUD Repository // SPRING DATA
     public void registerUser(final RegisterDTO registerDTO);
     public User getUser(final Long id);
-    public List<User> getAllUsers();
+    public List<User> getAllUsers(final int page);
     public void setName(final Long id, final String name);
     public void setSecondName(final Long id, final String secondName);
     public void setLastName(final Long id, final String lastName);
@@ -33,9 +34,12 @@ public interface UserService {
     public void setActivationCode(final Long id, final String email);
     public void setAvatar(final Long id, final String username, final MultipartFile avatar);
     public void setUpdateDate(final Long id);
-    public List<User> findUsersByUsernamePhrase(final String username);
-    public List<User> findUsersByEmailPhrase(final String email);
+    public List<User> findUsersByUsernamePhrase(final String username, final int page);
+    public List<User> findUsersByEmailPhrase(final String email, final int page);
     public User findUserByUsername(final String username);
     public void activationUser(final Long id);
     public void resetPassword(final ForgotPasswordDTO forgotPasswordDTO);
+    public Long countAllUser();
+    public Long countAllUserByUsernamePhrase(final String username);
+    public Long countAllUserByEmailPhrase(final String email);
 }

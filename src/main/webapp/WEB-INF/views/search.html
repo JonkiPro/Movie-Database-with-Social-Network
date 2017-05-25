@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My application!</title>
+
+    <meta name="description" content="My first application in Spring MVC">
+    <meta name="author" content="Jonki!">
+
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/search.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
+    <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
+    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-12">
+        <div data-th-replace="/include/navbar::navbar"></div>
+    </div>
+    <div class="row">
+        <div class="container-result">
+
+            <hgroup class="mb20">
+                <h1>Search Results</h1>
+                <h2 class="lead"><strong class="text-danger" th:text="${listMovies.size()}">ListMovies size</strong> results were found for the search for <strong
+                        class="text-danger" th:text="${search}">Search</strong></h2>
+            </hgroup>
+
+            <section class="col-xs-12 col-sm-6 col-md-12">
+
+                <th:block th:each="movie : ${listMovies}">
+                    <article class="search-result row">
+                        <div class="col-xs-12 col-sm-12 col-md-3">
+                            <a href="#" title="Lorem ipsum" class="thumbnail"><img
+                                    src="http://lorempixel.com/250/140/people" alt="Lorem ipsum"/></a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-2">
+                            <ul class="meta-search">
+                                <li><i class="glyphicon glyphicon-calendar"></i> <span th:text="${movie.releaseDate}">Release date</span></li>
+                                <li><i class="glyphicon glyphicon-time"></i> <span th:text="${movie.country}">Country</span></li>
+                                <li><i class="glyphicon glyphicon-tags"></i> <span th:text="${movie.genres}">Genres</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                            <h3><a th:href="@{'/movie/' + ${movie.id}}" title="" th:text="${movie.title}">Movie title</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, exercitationem,
+                                suscipit, distinctio, qui sapiente aspernatur molestiae non corporis magni sit sequi
+                                iusto debitis delectus doloremque.</p>
+                            <span sec:authorize="isAuthenticated()"  class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+                        </div>
+                        <span class="clearfix borda"></span>
+                    </article>
+                </th:block>
+
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

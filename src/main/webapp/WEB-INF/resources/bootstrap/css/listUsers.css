@@ -1,3 +1,5 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
 #table {
     margin-top: 40px;
 }
@@ -5,4 +7,42 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.card {
+     overflow: hidden;
+     position: relative;
+     border: 1px solid #CCC;
+     border-radius: 8px;
+     text-align: center;
+     padding: 0;
+     background-color: #fff;
+     color: #000;
+}
+.card .content {
+    position: relative;
+    margin: 15px;
+    z-index: 100;
+    text-align:left;
+}
+.card .avatar {
+    position: relative;
+    margin:15px 15px 5px 15px;
+    z-index: 100;
+    float:left;
+}
+.card .avatar img {
+    width:80px ;
+    height:80px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.personName {
+    font-weight: bold;
+    font-family: sans-serif;
+    color: #BA0100;
+    letter-spacing: 1px;
+}
+.btn-send {
+    margin-bottom: 5px;
 }

@@ -10,6 +10,7 @@ import com.jonki.Service.RandomNumberService;
 import com.jonki.Service.SendMessageService;
 import com.jonki.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() { return userCRUDRepository.findAll(); }
+    public List<User> getAllUsers(final int page) { return userCRUDRepository.findAll(new PageRequest(page, 9)).getContent(); }
 
     @Override
     public boolean checkRepeatedUsername(final String username) {
@@ -153,13 +154,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersByUsernamePhrase(final String username) {
-        return userCRUDRepository.findUsersByUsernamePhrase(username);
+    public List<User> findUsersByUsernamePhrase(final String username, final int page) {
+        return userCRUDRepository.findByUsernameIgnoreCaseContaining(username, new PageRequest(page, 9)).getContent();
     }
 
     @Override
-    public List<User> findUsersByEmailPhrase(final String email) {
-        return userCRUDRepository.findUsersByEmailPhrase(email);
+    public List<User> findUsersByEmailPhrase(final String email, final int page) {
+        return userCRUDRepository.findByEmailIgnoreCaseContaining(email, new PageRequest(page, 9)).getContent();
     }
 
     @Override
@@ -182,5 +183,20 @@ public class UserServiceImpl implements UserService {
 
         userCRUDRepository.setPassword(getIDByEmail(forgotPasswordDTO.getEmail()),
                                        encodeService.encode(randomNewPassword));
+    }
+
+    @Override
+    public Long countAllUser() {
+        return userCRUDRepository.countAllUser();
+    }
+
+    @Override
+    public Long countAllUserByUsernamePhrase(final String username) {
+        return userCRUDRepository.countAllUserByUsernamePhrase(username);
+    }
+
+    @Override
+    public Long countAllUserByEmailPhrase(final String email) {
+        return userCRUDRepository.countAllUserByEmailPhrase(email);
     }
 }
