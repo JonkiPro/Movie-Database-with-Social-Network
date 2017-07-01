@@ -30,7 +30,7 @@ public class MovieController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         return "addNewMovie_CheckTitle";

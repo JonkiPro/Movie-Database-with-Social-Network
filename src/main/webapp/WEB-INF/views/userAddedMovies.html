@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
-    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/user.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/search.css}"/>
     <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
 </head>
@@ -107,76 +107,29 @@
                     </div>
                     <!--/col-3-->
                     <div class="col-sm-9" contenteditable="false">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Here will be something.</div>
-                            <div class="panel-body"> Here will be something.
-
-                            </div>
-                        </div>
-                        <div class="panel panel-default target">
-                            <div class="panel-heading" contenteditable="false">Here will be something.</div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
-                                        </div>
+                        <div class="row well displayProfiles">
+                            <th:block th:each="movie : ${listMovies}">
+                                <article class="search-result row">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">
+                                        <a th:href="@{'/movie/' + ${movie.id}}" th:title="${movie.title}" class="thumbnail"><img
+                                                src="http://lorempixel.com/250/140/people" alt="Lorem ipsum"/></a>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-2">
+                                        <ul class="meta-search">
+                                            <li><i class="glyphicon glyphicon-calendar"></i> <span th:text="(${movie.releaseDate} != null and ${movie.releaseDate.length()} > 0) ? ${movie.releaseDate} : 'No release date!'">Release date</span></li>
+                                            <li><i class="glyphicon glyphicon-leaf"></i> <span th:text="(${movie.genres} != null and ${movie.genres.length()} > 0) ? ${movie.genres} : 'No genres!'">Genres</span></li>
+                                            <li><i class="glyphicon glyphicon-flag"></i> <span th:text="(${movie.country} != null and ${movie.country.length()} > 0) ? ${movie.country} : 'No countries!'">Country</span></li>
+                                            <li><i class="glyphicon glyphicon-user"></i> <span th:text="(${movie.director} != null and ${movie.director.length()} > 0) ? ${movie.director} : 'No directors!'">Director</span></li>
+                                        </ul>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
-                                        </div>
-
+                                    <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                                        <h3><a th:href="@{'/movie/' + ${movie.id}}" th:title="${movie.title}" th:text="${movie.title}">Movie title</a></h3>
+                                        <p th:text="(${movie.storyline} != null and ${movie.storyline.length()} > 0) ? ${movie.storyline} : 'No storyline!'">Storyline</p>
+                                        <span sec:authorize="isAuthenticated()"  class="plus"><a href="#" title="Add to favorites!"><i class="glyphicon glyphicon-plus"></i></a></span>
                                     </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Here will be something.</div>
-                            <div class="panel-body"> Here will be something.
-
-                            </div>
+                                    <span class="clearfix borda"></span>
+                                </article>
+                            </th:block>
                         </div>
                     </div>
 

@@ -17,6 +17,7 @@ public class Mapped {
         movie.setOfficialSite(movieDTO.getOfficialSite());
         movie.setReleaseDate(movieDTO.getReleaseDate());
         movie.setType(movieDTO.getType());
+        movie.setStoryline(movieDTO.getStoryline());
 
         if (movieDTO.getCountry() != null) {
             for (int i = 0; i < movieDTO.getCountry().size(); ++i) {

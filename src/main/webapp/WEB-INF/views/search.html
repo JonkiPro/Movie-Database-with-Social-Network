@@ -15,7 +15,6 @@
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
     <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
-    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -36,22 +35,21 @@
                 <th:block th:each="movie : ${listMovies}">
                     <article class="search-result row">
                         <div class="col-xs-12 col-sm-12 col-md-3">
-                            <a href="#" title="Lorem ipsum" class="thumbnail"><img
+                            <a th:href="@{'/movie/' + ${movie.id}}" th:title="${movie.title}" class="thumbnail"><img
                                     src="http://lorempixel.com/250/140/people" alt="Lorem ipsum"/></a>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-2">
                             <ul class="meta-search">
-                                <li><i class="glyphicon glyphicon-calendar"></i> <span th:text="${movie.releaseDate}">Release date</span></li>
-                                <li><i class="glyphicon glyphicon-time"></i> <span th:text="${movie.country}">Country</span></li>
-                                <li><i class="glyphicon glyphicon-tags"></i> <span th:text="${movie.genres}">Genres</span></li>
+                                <li><i class="glyphicon glyphicon-calendar"></i> <span th:text="(${movie.releaseDate} != null and ${movie.releaseDate.length()} > 0) ? ${movie.releaseDate} : 'No release date!'">Release date</span></li>
+                                <li><i class="glyphicon glyphicon-leaf"></i> <span th:text="(${movie.genres} != null and ${movie.genres.length()} > 0) ? ${movie.genres} : 'No genres!'">Genres</span></li>
+                                <li><i class="glyphicon glyphicon-flag"></i> <span th:text="(${movie.country} != null and ${movie.country.length()} > 0) ? ${movie.country} : 'No countries!'">Country</span></li>
+                                <li><i class="glyphicon glyphicon-user"></i> <span th:text="(${movie.director} != null and ${movie.director.length()} > 0) ? ${movie.director} : 'No directors!'">Director</span></li>
                             </ul>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-                            <h3><a th:href="@{'/movie/' + ${movie.id}}" title="" th:text="${movie.title}">Movie title</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, exercitationem,
-                                suscipit, distinctio, qui sapiente aspernatur molestiae non corporis magni sit sequi
-                                iusto debitis delectus doloremque.</p>
-                            <span sec:authorize="isAuthenticated()"  class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+                            <h3><a th:href="@{'/movie/' + ${movie.id}}" th:title="${movie.title}" th:text="${movie.title}">Movie title</a></h3>
+                            <p th:text="(${movie.storyline} != null and ${movie.storyline.length()} > 0) ? ${movie.storyline} : 'No storyline!'">Storyline</p>
+                            <span sec:authorize="isAuthenticated()"  class="plus"><a href="#" title="Add to favorites!"><i class="glyphicon glyphicon-plus"></i></a></span>
                         </div>
                         <span class="clearfix borda"></span>
                     </article>

@@ -3,9 +3,7 @@ package com.jonki.ServiceImpl;
 import com.jonki.Service.SecurityUserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +21,20 @@ public class SecurityUserServiceImpl implements SecurityUserService {
 
     @Override
     public String getUsername() {
-        return ((UserDetails) this.context.getAuthentication().getPrincipal()).getUsername();
+        String username;
+
+        try {
+            username = ((UserDetails) this.context.getAuthentication().getPrincipal()).getUsername();
+        } catch (ClassCastException e) {
+            username = this.context.getAuthentication().getPrincipal().toString();
+        }
+        return username;
     }
 
     @Override
     public void createUsernamePasswordAuthenticationToken(final String username,
                                                           final String password,
                                                           final Collection<? extends GrantedAuthority> authorities) {
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
         usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username,
                                                                                       password,

@@ -5,6 +5,7 @@ import com.jonki.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +15,22 @@ import javax.servlet.http.HttpSession;
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-    @Autowired
     private CookieService cookieService;
-    @Autowired
     private SecurityUserService securityUserService;
-    @Autowired
     private UserService userService;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
+
+    @Autowired
+    public AuthorizationServiceImpl(CookieService cookieService,
+                                    SecurityUserService securityUserService,
+                                    UserService userService) {
+        this.cookieService = cookieService;
+        this.securityUserService = securityUserService;
+        this.userService = userService;
+    }
 
     @Override
     public void setRequestSessionSecurity(final HttpServletRequest request,
@@ -54,6 +61,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             restoreUser();
 
             return true;
+        } else if(!cookieService.isCookie(request, "username")
+                      && session.getAttribute("user") != null) {
+            logout();
+
+            return false;
         } else {
             return false;
         }
@@ -88,6 +100,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         }
     }
 
+    @Override
+    public void restoreUserAfterActivationAccount(final Long id) {
+        User user = userService.getUser(id);
+
+        securityUserService.createUsernamePasswordAuthenticationToken(user.getUsername(),
+                null,
+                AuthorityUtils.createAuthorityList("ROLE_USER"));
+    }
+
     private void restoreUser() {
         String usernameFromCookie = cookieService.getValueCookie(request, "username");
 
@@ -98,5 +119,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         securityUserService.createUsernamePasswordAuthenticationToken(user.getUsername(),
                 null,
                 AuthorityUtils.createAuthorityList("ROLE_USER"));
+    }
+
+    private void logout() {
+        SecurityContextHolder.clearContext();
+        session.setAttribute("user", null);
     }
 }

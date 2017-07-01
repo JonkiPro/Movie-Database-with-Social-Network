@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:if="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +15,6 @@
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/changeBasicData.css}"/>
     <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
-    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -66,14 +65,14 @@
                         </div>
                     </th:block>
                     <form th:action="@{/user/settings/changeBasicData}" th:object="${changeBasicDataDTO}" method="POST"
-                          class="form-horizontal" role="form" enctype="multipart/form-data">
+                          class="form-horizontal" role="form"> <!-- enctype="multipart/form-data" -->
                         <!-- left column -->
                         <div class="col-md-4 col-sm-6 col-xs-12">
                             <div class="text-center">
                                 <img id="avatar" th:src="@{${session.user.getUrlAvatar()}}"
                                      class="avatar img-circle img-thumbnail" alt="avatar">
-                                <h6>Upload a different photo...</h6>
-                                <input th:name="multipartFile" type="file" class="text-center center-block well well-sm">
+                                <h6>Upload avatar...</h6>
+                                <input type="file" class="text-center center-block well well-sm">  <!-- th:name="multipartFile" -->
                             </div>
                         </div>
                         <!-- edit form column -->

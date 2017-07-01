@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
-    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/user.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/bootstrap/css/listUsers.css}"/>
     <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
 </head>
@@ -107,76 +107,27 @@
                     </div>
                     <!--/col-3-->
                     <div class="col-sm-9" contenteditable="false">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Here will be something.</div>
-                            <div class="panel-body"> Here will be something.
-
-                            </div>
-                        </div>
-                        <div class="panel panel-default target">
-                            <div class="panel-heading" contenteditable="false">Here will be something.</div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
+                        <div class="row well displayProfiles">
+                            <th:block th:each="user, iterStat : ${listUsers}">
+                                <div class="col-sm-4">
+                                    <div class="card" th:styleappend="${iterStat.index} >= 3 ? 'margin-top: 15px;' : ''">
+                                        <div class="avatar">
+                                            <a th:href="@{'/user/' + ${user.id}}" th:title="${user.username}"><img  src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-128.png" alt="" /></a>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
+                                        <div class="content">
+                                            <a th:href="@{'/user/' + ${user.id}}"><p class="personName" th:text="${user.username}">Username</p></a>
+                                            <p class="profInfo" th:utext="'<b>E-mail:</b> ' + ${user.email}">E-mail</p>
                                         </div>
+                                        <th:block th:if="${isLogged}">
+                                            <a th:href="@{'/messages/sendMessage?recipient=' + ${user.username}}">
+                                                <button type="submit" class="btn btn-success btn-send">
+                                                    SEND MESSAGE
+                                                </button>
+                                            </a>
+                                        </th:block>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="thumbnail">
-                                            <img alt="300x200" src="#">
-                                            <div class="caption">
-                                                <h3>
-                                                    Jonki
-                                                </h3>
-                                                <p>
-                                                    Here will be something.
-                                                </p>
-                                                <p>
-
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
                                 </div>
-
-                            </div>
-
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">Here will be something.</div>
-                            <div class="panel-body"> Here will be something.
-
-                            </div>
+                            </th:block>
                         </div>
                     </div>
 

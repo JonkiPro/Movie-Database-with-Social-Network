@@ -15,7 +15,6 @@
     <link rel="stylesheet" th:href="@{/resources/bootstrap/css/navbar.css}"/>
     <script th:src="@{/resources/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/resources/bootstrap/js/jquery.min.js}"></script>
-    <script th:src="@{/resources/bootstrap/js/scripts.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -141,6 +140,10 @@
                                             <option value="Western">Western</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="storyline">Storyline:</label>
+                                    <textarea th:name="storyline" class="form-control" rows="5" id="storyline" placeholder="Storyline"></textarea>
                                 </div>
                                 <ul class="list-inline pull-right btn-save">
                                     <li>

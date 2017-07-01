@@ -2,11 +2,10 @@ package com.jonki.Service;
 
 import com.jonki.DTO.ForgotPasswordDTO;
 import com.jonki.DTO.RegisterDTO;
+import com.jonki.Entity.Friendship;
 import com.jonki.Entity.User;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -42,4 +41,7 @@ public interface UserService {
     public Long countAllUser();
     public Long countAllUserByUsernamePhrase(final String username);
     public Long countAllUserByEmailPhrase(final String email);
+
+    //
+    public List<User> getFriendsByFriendshipList(final List<Friendship> friendshipList);
 }

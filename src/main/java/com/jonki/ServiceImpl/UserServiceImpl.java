@@ -4,10 +4,11 @@ import com.jonki.DAO.UserCRUDRepository;
 import com.jonki.DAO.UserDAO;
 import com.jonki.DTO.ForgotPasswordDTO;
 import com.jonki.DTO.RegisterDTO;
+import com.jonki.Entity.Friendship;
 import com.jonki.Entity.User;
 import com.jonki.Service.EncodeService;
 import com.jonki.Service.RandomNumberService;
-import com.jonki.Service.SendMessageService;
+import com.jonki.Service.MailService;
 import com.jonki.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,28 +17,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserDAO userDAO;
-    @Autowired
     private UserCRUDRepository userCRUDRepository;
-    @Autowired
-    private SendMessageService sendMessageService;
-    @Autowired
+    private MailService mailService;
     private RandomNumberService randomNumberService;
-    @Autowired
     private EncodeService encodeService;
+
+    @Autowired
+    public UserServiceImpl(UserDAO userDAO, UserCRUDRepository userCRUDRepository, MailService mailService,
+                           RandomNumberService randomNumberService, EncodeService encodeService) {
+        this.userDAO = userDAO;
+        this.userCRUDRepository = userCRUDRepository;
+        this.mailService = mailService;
+        this.randomNumberService = randomNumberService;
+        this.encodeService = encodeService;
+    }
 
     @Override
     public void registerUser(final RegisterDTO registerDTO) {
         int randomActivationCode = randomNumberService.randomActivationCode();
 
-        sendMessageService.send(registerDTO.getEmail(), "Activation code", String.valueOf(randomActivationCode));
+        mailService.send(registerDTO.getEmail(), "Activation code", String.valueOf(randomActivationCode));
 
         userCRUDRepository.save(new User(registerDTO.getUsername(),
                                  registerDTO.getEmail(),
@@ -127,7 +134,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setActivationCode(final Long id, final String email) {
         int randomActivationCode = randomNumberService.randomActivationCode();
-        sendMessageService.send(email,
+        mailService.send(email,
                                 "Activation code",
                                 String.valueOf(randomActivationCode));
 
@@ -177,7 +184,7 @@ public class UserServiceImpl implements UserService {
     public void resetPassword(final ForgotPasswordDTO forgotPasswordDTO) {
         String randomNewPassword = randomNumberService.randomNewPassword();
 
-        sendMessageService.send(forgotPasswordDTO.getEmail(),
+        mailService.send(forgotPasswordDTO.getEmail(),
                                 "New password",
                                 randomNewPassword);
 
@@ -198,5 +205,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long countAllUserByEmailPhrase(final String email) {
         return userCRUDRepository.countAllUserByEmailPhrase(email);
+    }
+
+    @Override
+    public List<User> getFriendsByFriendshipList(final List<Friendship> friendshipList) {
+        List<User> userList = new ArrayList<>();
+
+        for(Friendship friendship : friendshipList) {
+            userList.add(userCRUDRepository.findOne(friendship.getFriendB()));
+        }
+
+        return userList;
     }
 }

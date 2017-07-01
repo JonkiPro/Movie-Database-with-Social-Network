@@ -15,10 +15,14 @@ import java.util.List;
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
 
-    @Autowired
     private MessageCRUDRepository messageCRUDRepository;
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public MessageServiceImpl(MessageCRUDRepository messageCRUDRepository, UserService userService) {
+        this.messageCRUDRepository = messageCRUDRepository;
+        this.userService = userService;
+    }
 
     @Override
     public void sendMessage(final User author, final MessageDTO messageDTO) {

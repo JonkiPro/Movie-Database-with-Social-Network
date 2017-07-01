@@ -17,6 +17,7 @@ public class MovieDTO {
     private List<String> country;
     private List<String> language;
     private List<String> genres;
+    private String storyline;
 
     public Long getIDAuthor() {
         return IDAuthor;
@@ -120,5 +121,13 @@ public class MovieDTO {
 
     public void setGenres(List<String> genres) {
         this.genres = genres;
+    }
+
+    public String getStoryline() {
+        return storyline;
+    }
+
+    public void setStoryline(String storyline) {
+        this.storyline = storyline;
     }
 }

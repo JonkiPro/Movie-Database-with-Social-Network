@@ -86,7 +86,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "friends",
+            name = "friendship",
             joinColumns = {@JoinColumn(name = "friendB")},
             inverseJoinColumns = {@JoinColumn(name = "friendA")}
     )
@@ -94,17 +94,17 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "friends",
-            joinColumns = {@JoinColumn(name = "invitationB")},
-            inverseJoinColumns = {@JoinColumn(name = "invitationA")}
+            name = "invitations",
+            joinColumns = {@JoinColumn(name = "toID")},
+            inverseJoinColumns = {@JoinColumn(name = "fromID")}
     )
     private List<User> sentInvitations;
 
     @ManyToMany
     @JoinTable(
-            name = "friends",
-            joinColumns = {@JoinColumn(name = "invitationA")},
-            inverseJoinColumns = {@JoinColumn(name = "invitationB")}
+            name = "invitations",
+            joinColumns = {@JoinColumn(name = "fromID")},
+            inverseJoinColumns = {@JoinColumn(name = "toID")}
     )
     private List<User> receivedInvitations;
 

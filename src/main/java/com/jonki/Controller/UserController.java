@@ -34,9 +34,15 @@ public class UserController {
     @Autowired
     private EncodeService encodeService;
     @Autowired
-    private SendMessageService sendMessageService;
+    private MailService mailService;
     @Autowired
     private RandomNumberService randomNumberService;
+    @Autowired
+    private InvitationService invitationService;
+    @Autowired
+    private FriendshipService friendshipService;
+    @Autowired
+    private MovieService movieService;
 
     @GetMapping("/user/{id}")
     public String showUser(@PathVariable("id") final Long id,
@@ -58,9 +64,21 @@ public class UserController {
             } else {
                 model.addAttribute("isMyAccount", false);
             }
+
+            if (validator.isYourInvitation(id, invitationService.findSentInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isYourInvitation", true);
+            } else if (validator.isInvitationForYou(id, invitationService.findReceivedInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isInvitationForYou", true);
+            } else if (validator.isYourFriend(id, friendshipService.findFriendship(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isFriend", true);
+            } else {
+                model.addAttribute("isUnknown", true);
+            }
         }
 
         model.addAttribute("user", user);
+        model.addAttribute("numberOfMoviesAdded", movieService.countAddedMoviesByIdAuthor(user.getId()));
+        model.addAttribute("numberOfFriends", friendshipService.findFriendship(user.getId()).size());
 
         return "user";
     }
@@ -119,7 +137,7 @@ public class UserController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if (!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         return "settings";
@@ -132,7 +150,7 @@ public class UserController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if (!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         model.addAttribute("user", session.getAttribute("user"));
@@ -146,9 +164,9 @@ public class UserController {
                                   final BindingResult bindingResult,
                                   final Model model,
                                   final HttpSession session) {
-        if (bindingResult.hasErrors()
-                || (changeBasicDataDTO.getMultipartFile().getOriginalFilename().length() > 0
-                        && !validator.checkAvatar(changeBasicDataDTO.getMultipartFile()))) {
+        if (bindingResult.hasErrors())
+                /*|| (changeBasicDataDTO.getMultipartFile().getOriginalFilename().length() > 0
+                        && !validator.checkAvatar(changeBasicDataDTO.getMultipartFile()))*/ {
             model.addAttribute("invalidData", true);
             return "changeBasicData";
         } else {
@@ -164,9 +182,9 @@ public class UserController {
             userService.setSecondName(user.getId(), changeBasicDataDTO.getSecondName());
             userService.setLastName(user.getId(), changeBasicDataDTO.getLastName());
             userService.setSex(user.getId(), changeBasicDataDTO.getSex());
-            if(changeBasicDataDTO.getMultipartFile().getOriginalFilename().length() > 0) {
-                userService.setAvatar(user.getId(), user.getUsername(), changeBasicDataDTO.getMultipartFile());
-            }
+//            if(changeBasicDataDTO.getMultipartFile().getOriginalFilename().length() > 0) {
+//                userService.setAvatar(user.getId(), user.getUsername(), changeBasicDataDTO.getMultipartFile());
+//            }
             userService.setUpdateDate(user.getId());
 
             return "changeBasicData";
@@ -180,7 +198,7 @@ public class UserController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if (!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         model.addAttribute("changePasswordDTO", new ChangePasswordDTO());
@@ -233,7 +251,7 @@ public class UserController {
                 model.addAttribute("isChangeEmail", true);
             }
         } else {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         model.addAttribute("changeEmailDTO", new ChangeEmailDTO());
@@ -259,7 +277,7 @@ public class UserController {
 
             int randomActivationCode = randomNumberService.randomActivationCode();
 
-            if(sendMessageService.send(((User) session.getAttribute("user")).getEmail(),
+            if(mailService.send(((User) session.getAttribute("user")).getEmail(),
                                       "E-mail change code",
                                        String.valueOf(randomActivationCode))) {
                 User user = (User) session.getAttribute("user");
@@ -311,5 +329,129 @@ public class UserController {
             redirectAttributes.addFlashAttribute("textError", " You entered the wrong code!");
             return "redirect:/user/settings/changeEmail";
         }
+    }
+
+    @PostMapping("/sendInvitation")
+    public String sendInvitation(@RequestParam("id") final Long toID,
+                                 final HttpSession session) {
+        try {
+            invitationService.addInvitation(((User) session.getAttribute("user")).getId(), toID);
+        } catch (NullPointerException e) { /* do not do anything */ }
+
+        return "redirect:/user/" + toID;
+    }
+
+    @PostMapping("/deleteInvitation")
+    public String deleteInvitation(@RequestParam("id") final Long toID,
+                                   final HttpSession session) {
+        try {
+            invitationService.deleteInvitation(invitationService.findInvitation(((User) session.getAttribute("user")).getId(), toID));
+        } catch (NullPointerException e) { /* do not do anything */ }
+
+        return "redirect:/user/" + toID;
+    }
+
+    @PostMapping("/addFriend")
+    public String addFriend(@RequestParam("id") final Long toID,
+                            final HttpSession session) {
+        try {
+            invitationService.deleteInvitation(invitationService.findInvitation(toID, ((User) session.getAttribute("user")).getId()));
+            friendshipService.addFriend(((User) session.getAttribute("user")).getId(), toID);
+        } catch (NullPointerException e) { /* do not do anything */ }
+
+        return "redirect:/user/" + toID;
+    }
+
+    @PostMapping("/deleteFriend")
+    public String deleteFriend(@RequestParam("id") final Long toID,
+                               final HttpSession session) {
+        try {
+            friendshipService.deleteFriend(((User) session.getAttribute("user")).getId(), toID);
+        } catch (NullPointerException e) { /* do not do anything */ }
+
+        return "redirect:/user/" + toID;
+    }
+
+    @GetMapping("/user/{id}/friends")
+    public String showUserFriends(@PathVariable("id") final Long id,
+                                  final HttpServletRequest request,
+                                  final HttpSession session,
+                                  final Model model) {
+        authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
+        User user = userService.getUser(id);
+
+        if (user == null) {
+            authorizationService.checkOrRestoreUser();
+
+            return "redirect:/";
+        }
+
+        if (authorizationService.isLogged()) {
+            if (((User) session.getAttribute("user")).getId().equals(user.getId())) {
+                model.addAttribute("isMyAccount", true);
+            } else {
+                model.addAttribute("isMyAccount", false);
+            }
+
+            if (validator.isYourInvitation(id, invitationService.findSentInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isYourInvitation", true);
+            } else if (validator.isInvitationForYou(id, invitationService.findReceivedInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isInvitationForYou", true);
+            } else if (validator.isYourFriend(id, friendshipService.findFriendship(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isFriend", true);
+            } else {
+                model.addAttribute("isUnknown", true);
+            }
+
+            model.addAttribute("isLogged", true);
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("numberOfMoviesAdded", movieService.countAddedMoviesByIdAuthor(user.getId()));
+        model.addAttribute("listUsers", userService.getFriendsByFriendshipList(friendshipService.findFriendship(user.getId())));
+        model.addAttribute("numberOfFriends", friendshipService.findFriendship(user.getId()).size());
+
+        return "userFriends";
+    }
+
+    @GetMapping("/user/{id}/addedMovies")
+    public String showUserAddedMovies(@PathVariable("id") final Long id,
+                                      final HttpServletRequest request,
+                                      final HttpSession session,
+                                      final Model model) {
+        authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
+        User user = userService.getUser(id);
+
+        if (user == null) {
+            authorizationService.checkOrRestoreUser();
+
+            return "redirect:/";
+        }
+
+        if (authorizationService.isLogged()) {
+            if (((User) session.getAttribute("user")).getId().equals(user.getId())) {
+                model.addAttribute("isMyAccount", true);
+            } else {
+                model.addAttribute("isMyAccount", false);
+            }
+
+            if (validator.isYourInvitation(id, invitationService.findSentInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isYourInvitation", true);
+            } else if (validator.isInvitationForYou(id, invitationService.findReceivedInvitations(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isInvitationForYou", true);
+            } else if (validator.isYourFriend(id, friendshipService.findFriendship(((User) session.getAttribute("user")).getId()))) {
+                model.addAttribute("isFriend", true);
+            } else {
+                model.addAttribute("isUnknown", true);
+            }
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("numberOfMoviesAdded", movieService.countAddedMoviesByIdAuthor(user.getId()));
+        model.addAttribute("listUsers", userService.getFriendsByFriendshipList(friendshipService.findFriendship(user.getId())));
+        model.addAttribute("numberOfFriends", friendshipService.findFriendship(user.getId()).size());
+        model.addAttribute("listMovies", movieService.findMovieByIDAuthor(user.getId()));
+
+        return "userAddedMovies";
     }
 }

@@ -1,9 +1,6 @@
 package com.jonki.Entity;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "movies")
@@ -52,6 +49,9 @@ public class Movie {
 
     @Column(name = "genres")
     private String genres;
+
+    @Column(name = "storyline")
+    private String storyline;
 
     public Long getId() {
         return id;
@@ -163,5 +163,13 @@ public class Movie {
 
     public void setGenres(String genres) {
         this.genres = genres;
+    }
+
+    public String getStoryline() {
+        return storyline;
+    }
+
+    public void setStoryline(String storyline) {
+        this.storyline = storyline;
     }
 }

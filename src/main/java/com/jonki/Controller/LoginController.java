@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class ApiController {
+public class LoginController {
 
     @Autowired
     private AuthorizationService authorizationService;
 
-    private Logger logger = LoggerFactory.getLogger(ApiController.class);
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(final HttpServletRequest request,

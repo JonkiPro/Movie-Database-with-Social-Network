@@ -20,4 +20,5 @@ public interface AuthorizationService {
     public void login();
     public User getUser();
     public void checkOrRestoreUser();
+    public void restoreUserAfterActivationAccount(final Long id);
 }

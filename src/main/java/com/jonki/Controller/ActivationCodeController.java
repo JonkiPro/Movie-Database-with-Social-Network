@@ -2,6 +2,7 @@ package com.jonki.Controller;
 
 import com.jonki.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class ActivationCodeController {
     @Autowired
     private AuthorizationService authorizationService;
 
+    @Secured("ROLE_USER")
     @GetMapping("/checkCode")
     public String showPage(final HttpServletRequest request,
                            final HttpSession session) {
@@ -29,18 +31,24 @@ public class ActivationCodeController {
             return "redirect:/";
         }
 
+        SecurityContextHolder.clearContext();
+
         return "checkActivationCode";
     }
 
     @PostMapping("/checkCode")
     public String checkCode(@RequestParam("code") final String code,
                             final Model model,
+                            final HttpServletRequest request,
                             final HttpSession session) {
+        authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
+
         int activationCode;
         try { activationCode = Integer.parseInt(code); } catch(NumberFormatException e) { activationCode = 0; }
 
         if(userService.checkActivationCode((long)session.getAttribute("userID"), activationCode)) {
             userService.activationUser((long)session.getAttribute("userID"));
+            authorizationService.restoreUserAfterActivationAccount((long)session.getAttribute("userID"));
             session.removeAttribute("userID");
             session.removeAttribute("userEmail");
             return "redirect:/loginSuccessfully";
@@ -53,7 +61,7 @@ public class ActivationCodeController {
     @PostMapping("/sendNewCode")
     public String sendNewCode(final HttpSession session,
                               final Model model) {
-        userService.setActivationCode(authorizationService.getUser().getId(),
+        userService.setActivationCode((long)session.getAttribute("userID"),
                                       String.valueOf(session.getAttribute("userEmail")));
 
         model.addAttribute("isNewCode", true);

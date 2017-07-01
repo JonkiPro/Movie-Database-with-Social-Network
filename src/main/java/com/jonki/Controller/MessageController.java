@@ -43,7 +43,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         ((User) session.getAttribute("user")).setReceivedMessages(messageService.findAllReceivedMessages(((User) session.getAttribute("user"))));
@@ -71,7 +71,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         model.addAttribute("messageDTO", new MessageDTO());
@@ -113,7 +113,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         ((User) session.getAttribute("user")).setSentMessages(messageService.findAllSentMessages(((User) session.getAttribute("user"))));
@@ -141,7 +141,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         ((User) session.getAttribute("user")).setReceivedMessages(messageService.findAllReceivedMessages(((User) session.getAttribute("user"))));
@@ -172,7 +172,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         ((User) session.getAttribute("user")).setSentMessages(messageService.findAllSentMessages(((User) session.getAttribute("user"))));
@@ -197,7 +197,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         List<Message> listMessages = new ArrayList<>();
@@ -222,7 +222,7 @@ public class MessageController {
         authorizationService.setRequestSessionSecurity(request, session, SecurityContextHolder.getContext());
 
         if(!authorizationService.isLogged()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         List<Message> listMessages = new ArrayList<>();

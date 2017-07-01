@@ -32,6 +32,13 @@ public class WebDatasourceConfig {
     @Value("${database.username}") String databaseUsername;
     @Value("${database.password}") String databasePassword;
 
+    @Value("${database.hibernate.show_sql}") boolean databaseHibernateShowSql;
+    @Value("${database.hibernate.dialect}") String databaseHibernateDialect;
+    @Value("${database.hibernate.hbm2ddl.auto}") String databaseHibernateHbm2ddlAuto;
+    @Value("${database.enable_lazy_load_no_trans}") boolean databaseHibernateEnableLazyLoadNoTrans;
+
+    @Value("${database.packages_to_scan}") String databasePackagesToScan;
+
     @Bean
     public DataSource getDatasource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -46,7 +53,7 @@ public class WebDatasourceConfig {
     @Bean
     public SessionFactory getSessionFactory() throws IOException {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setPackagesToScan("com.jonki");
+        sessionFactoryBean.setPackagesToScan(databasePackagesToScan);
         sessionFactoryBean.setHibernateProperties(getHibernateProperties());
         sessionFactoryBean.setDataSource(getDatasource());
         sessionFactoryBean.afterPropertiesSet();
@@ -63,12 +70,12 @@ public class WebDatasourceConfig {
         return transactionManager;
     }
 
-    private static Properties getHibernateProperties() {
+    private Properties getHibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.put("hibernate.show_sql", true);
-        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-        hibernateProperties.put("hibernate.hbm2ddl.auto", "update");
-        hibernateProperties.put("hibernate.enable_lazy_load_no_trans", true);
+        hibernateProperties.put("hibernate.show_sql", databaseHibernateShowSql);
+        hibernateProperties.put("hibernate.dialect", databaseHibernateDialect);
+        hibernateProperties.put("hibernate.hbm2ddl.auto", databaseHibernateHbm2ddlAuto);
+        hibernateProperties.put("hibernate.enable_lazy_load_no_trans", databaseHibernateEnableLazyLoadNoTrans);
 
         return hibernateProperties;
     }
@@ -78,7 +85,7 @@ public class WebDatasourceConfig {
         LocalContainerEntityManagerFactoryBean factoryBean =
                                                 new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDatasource());
-        factoryBean.setPackagesToScan("com.jonki");
+        factoryBean.setPackagesToScan(databasePackagesToScan);
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         factoryBean.setJpaProperties(getHibernateProperties());
 
